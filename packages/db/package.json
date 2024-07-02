@@ -1,0 +1,24 @@
+{
+  "name": "@repo/db",
+  "version": "0.0.0",
+  "type": "module",
+  "main" : "./src/index.ts",
+  "scripts": {
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:migrate"  : "prisma db migrate",
+    "db:studio": "prisma studio",
+    "db:reset" : "prisma db push --force-reset && prisma db seed"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.15.1",
+    "@repo/schemas" :  "workspace:*"
+  },
+  "devDependencies": {
+    "prisma": "^5.15.1",
+    "typescript": "^5.5.2"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  }
+}
