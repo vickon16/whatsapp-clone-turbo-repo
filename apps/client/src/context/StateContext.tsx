@@ -3,7 +3,11 @@ import { firebaseAuth } from "@/utils/FirebaseConfig";
 import { appLinks } from "@/utils/appLinks";
 import { defaultAvatar } from "@/utils/constants";
 import { socketVariables } from "@repo/constants";
-import { TAuthSchema, TMessageSchema } from "@repo/schemas/types";
+import {
+  TAuthSchema,
+  TCallSocketType,
+  TMessageSchema,
+} from "@repo/schemas/types";
 import { AxiosError } from "axios";
 import { onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "next/router";
@@ -14,7 +18,7 @@ import {
   useReducer,
   useState,
   type Dispatch,
-  type PropsWithChildren
+  type PropsWithChildren,
 } from "react";
 import { io } from "socket.io-client";
 import {
@@ -66,6 +70,7 @@ export const StateProvider = ({ children }: PropsWithChildren) => {
 
           // for socket connection
           const socket = io(process.env.NEXT_PUBLIC_SERVER_URL || "");
+
           socket.emit(socketVariables.addUser, newUser.id);
           return dispatch({ type: "SET_SOCKET", payload: socket });
         } catch (error) {
@@ -89,12 +94,36 @@ export const StateProvider = ({ children }: PropsWithChildren) => {
   // for socket connection
   useEffect(() => {
     if (!!state.socket && !socketEvent) {
+      // on receive message
       state.socket.on(
         socketVariables.receiveMessage,
         (message: TMessageSchema) => {
-          dispatch({ type: "ADD_TO_PAIR_MESSAGES", payload: message });
+          dispatch({ type: "ADD_MESSAGE_TO_USER_PAIR", payload: message });
         },
       );
+
+      // on sign out
+      state.socket.on(socketVariables.onlineUsers, (users: string[]) => {
+        dispatch({ type: "SET_ALL_ONLINE_USERS_ID", payload: users });
+      });
+
+      // on incoming voice call
+      state.socket.on(socketVariables.incomingCall, (data: TCallSocketType) => {
+        dispatch({ type: "SET_CALL", payload: data });
+      });
+
+      // approve accepting incoming call
+      state.socket.on(
+        socketVariables.acceptIncomingCallApprove,
+        (data: TCallSocketType) => {
+          dispatch({ type: "SET_CALL", payload: data });
+        },
+      );
+
+      // on rejected voice call
+      state.socket.on(socketVariables.rejectCallApproved, () => {
+        dispatch({ type: "SET_END_CALL" });
+      });
 
       setSocketEvent(true);
     }

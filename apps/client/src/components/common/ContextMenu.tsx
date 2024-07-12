@@ -1,5 +1,6 @@
+import useHandleOutsideClick from "@/hooks/useHandleOutsideClick";
 import { cn } from "@/utils";
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 
 export type TContextOption = { name: string; callback: () => void };
 
@@ -30,21 +31,11 @@ const ContextMenu = ({
     closeContextMenu();
   };
 
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      const target = e.target as (Node & { id?: string }) | null;
-      if (target?.id === contextIdentifier) return;
-      if (contextMenuRef?.current && !contextMenuRef.current.contains(target)) {
-        closeContextMenu();
-      }
-    };
-
-    document.addEventListener("click", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, [contextMenuRef, closeContextMenu, contextIdentifier]);
+  useHandleOutsideClick({
+    contextIdentifier,
+    contextRef: contextMenuRef,
+    callBack: closeContextMenu,
+  });
 
   return (
     <div

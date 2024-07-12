@@ -15,7 +15,7 @@ type DefaultAvatarProps = React.ImgHTMLAttributes<HTMLImageElement> & {
 
 type ConditionalAvatarProps =
   | {
-      size: "sm" | "md" | "lg";
+      size: "sm" | "md" | "lg" | "2xl";
       setImage?: never;
       imageFile?: never;
       setImageFile?: never;
@@ -83,6 +83,7 @@ const Avatar = React.forwardRef<HTMLImageElement, CombinedProps>(
           size === "md" && "size-12",
           size === "lg" && "size-14",
           size === "xl" && "size-36",
+          size === "2xl" && "size-40",
           imageContainerClassName,
         )}
       >

@@ -94,5 +94,5 @@ export default {
 // "icon-green": "#00a884",
 // "search-input-container-background": "-->primary/50",
 // "outgoing-background": "#005c4b",
-// "bubble-meta": "hsla(0,0%,100%,0.6)",
+// "bubble-meta": "--> link",
 // "icon-ack": "#53bdeb",

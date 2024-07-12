@@ -13,8 +13,8 @@ export const messageSchema = z.object({
   pairId: z.string().refine((value) => {
     return value.includes("-@-");
   }),
-  id: z.string().min(10).optional(),
-  type: z.union([z.literal("text"), z.literal("audio"), z.literal("images")]),
+  id: z.string().min(10),
+  type: z.union([z.literal("text"), z.literal("audio"), z.literal("image")]),
   message: z.string().min(1),
   senderId: z.string().min(10),
   receiverId: z.string().min(10),

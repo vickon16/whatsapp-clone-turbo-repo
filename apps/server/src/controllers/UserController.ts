@@ -12,18 +12,26 @@ export const getAllUsers = async (
       select: { id: true, email: true, name: true, image: true, bio: true },
     });
 
-    // group users by their initial letters e.g {U : [{name : User1}]}
-    const groupedByFirstLetter = users.reduce((acc: any, obj) => {
-      const firstLetter = obj?.name?.charAt(0).toUpperCase();
-      if (!acc[firstLetter]) acc[firstLetter] = [];
-      acc[firstLetter].push(obj);
-      return acc;
-    }, {});
-
     return res.status(200).json({
       msg: "Successful",
       success: true,
-      data: groupedByFirstLetter,
+      data: users,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getAllOnlineUsersId = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    return res.status(200).json({
+      msg: "Successful",
+      success: true,
+      data: Array.from(onlineUsers.keys()) || [],
     });
   } catch (error) {
     next(error);

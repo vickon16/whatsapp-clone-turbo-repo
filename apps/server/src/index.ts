@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 import { authRoutes, messagesRoutes, usersRoutes } from "@/routes";
 import { Server } from "socket.io";
 import { socketVariables } from "@repo/constants";
-import { TMessageSchema } from "@repo/schemas/types";
+import { TCallSocketType, TMessageSchema } from "@repo/schemas/types";
 
 dotenv.config();
 
@@ -30,6 +30,7 @@ app.use((err: any, req: any, res: any, next: any) => {
   res.send(err.message);
 });
 
+app.use("/uploads", express.static("uploads"));
 app.use("/api/auth", authRoutes);
 app.use("/api/users", usersRoutes);
 app.use("/api/messages", messagesRoutes);
@@ -55,15 +56,58 @@ io.on("connection", (socket) => {
   // on add user
   socket.on(socketVariables.addUser, (userId) => {
     onlineUsers.set(userId, socket.id);
+    socket.broadcast.emit(
+      socketVariables.onlineUsers,
+      Array.from(onlineUsers.keys())
+    );
+  });
+
+  // on sign-out
+  socket.on(socketVariables.signOutUser, (userId: string) => {
+    onlineUsers.delete(userId),
+      socket.broadcast.emit(
+        socketVariables.onlineUsers,
+        Array.from(onlineUsers.keys())
+      );
   });
 
   // on send messages
   socket.on(socketVariables.sendMessage, (data: TMessageSchema) => {
     // get the receiver user
-    const sendUserSocket = onlineUsers.get(data.receiverId);
+    const sendUserSocketId = onlineUsers.get(data.receiverId);
     // if the user is online, tell the other user that the current user have received the message.
-    if (!!sendUserSocket) {
-      socket.to(sendUserSocket).emit(socketVariables.receiveMessage, data);
+    if (!!sendUserSocketId) {
+      console.log("user is online");
+      socket.to(sendUserSocketId).emit(socketVariables.receiveMessage, data);
+    }
+  });
+
+  // on out-going call
+  socket.on(socketVariables.outGoingCall, (data: TCallSocketType) => {
+    const sendUserSocketId = onlineUsers.get(data.receiver.id);
+    if (!!sendUserSocketId) {
+      socket.to(sendUserSocketId).emit(socketVariables.incomingCall, {
+        ...data,
+        dispatchType: "in-coming",
+      } satisfies TCallSocketType);
+    }
+  });
+
+  // on accept incoming voice and video call
+  socket.on(socketVariables.acceptIncomingCall, (data: TCallSocketType) => {
+    const sendUserSocketId = onlineUsers.get(data.receiver.id);
+    if (!!sendUserSocketId) {
+      socket
+        .to(sendUserSocketId)
+        .emit(socketVariables.acceptIncomingCallApprove, data);
+    }
+  });
+
+  // on reject call
+  socket.on(socketVariables.rejectCall, (id: string) => {
+    const sendUserSocketId = onlineUsers.get(id);
+    if (!!sendUserSocketId) {
+      socket.to(sendUserSocketId).emit(socketVariables.rejectCallApproved);
     }
   });
 });

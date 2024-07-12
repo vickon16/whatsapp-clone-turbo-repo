@@ -16,20 +16,8 @@ export type TUserPair = Omit<Prisma.user_pairGetPayload<{}>, "messages"> & {
   messages: TMessageSchema[];
 };
 export type TUserPairIncludes = Omit<
-  Prisma.user_pairGetPayload<{
-    include: { receiver: true; sender: true };
-  }>,
+  Prisma.user_pairGetPayload<{}>,
   "messages"
 > & {
   messages: TMessageSchema[];
-};
-
-export type TChatList = Omit<
-  Prisma.user_pairGetPayload<{
-    include: { receiver: true; sender: true };
-  }>,
-  "messages"
-> & {
-  unreadMessagesLength: number;
-  lastMessage: TMessageSchema[];
 };

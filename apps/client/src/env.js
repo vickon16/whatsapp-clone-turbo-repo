@@ -9,7 +9,9 @@ export const env = createEnv({
   client: {
     NEXT_PUBLIC_FIREBASE_API_KEY: z.string(),
     NEXT_PUBLIC_FIREBASE_APP_ID: z.string(),
-    NEXT_PUBLIC_SERVER_URL : z.string(),
+    NEXT_PUBLIC_SERVER_URL: z.string(),
+    NEXT_PUBLIC_ZEGO_APP_ID: z.string(),
+    NEXT_PUBLIC_ZEGO_SERVER_SECRET: z.string(),
   },
 
   runtimeEnv: {
@@ -17,6 +19,8 @@ export const env = createEnv({
     NEXT_PUBLIC_FIREBASE_API_KEY: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
     NEXT_PUBLIC_FIREBASE_APP_ID: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
     NEXT_PUBLIC_SERVER_URL: process.env.NEXT_PUBLIC_SERVER_URL,
+    NEXT_PUBLIC_ZEGO_APP_ID: process.env.NEXT_PUBLIC_ZEGO_APP_ID,
+    NEXT_PUBLIC_ZEGO_SERVER_SECRET: process.env.NEXT_PUBLIC_ZEGO_SERVER_SECRET,
   },
 
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,

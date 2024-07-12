@@ -1,51 +1,47 @@
 import { useStateProvider } from "@/context/StateContext";
 import { API } from "@/utils";
 import { appLinks } from "@/utils/appLinks";
-import { TChatList, TUserPair } from "@repo/db";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { TUserPairIncludes } from "@repo/db";
+import { useQuery } from "@tanstack/react-query";
 
-export const useGetPairMessagesQuery = ({
+export const useSetReadMessage = ({
   senderId,
   receiverId,
 }: {
   senderId?: string;
   receiverId?: string;
 }) => {
-  const queryClient = useQueryClient();
-  const { dispatch } = useStateProvider();
   return useQuery({
     enabled: !!senderId && !!receiverId,
-    queryKey: [appLinks.queryKeys.getPairMessages, { senderId, receiverId }],
+    queryKey: [appLinks.queryKeys.setReadMessages, { senderId, receiverId }],
     queryFn: async () => {
       const response = await API.get(
-        `${appLinks.getPairMessages}?senderId=${senderId}&receiverId=${receiverId}`,
+        `${appLinks.setReadMessages}?senderId=${senderId}&receiverId=${receiverId}`,
       );
-      if (!response.data.success || !response.data.data) {
+      if (!response.data.success) {
         throw new Error(response.data.msg);
       }
-
-      const pairMessages = response.data.data as TUserPair;
-      dispatch({ type: "SET_PAIR_MESSAGES", payload: pairMessages.messages });
-      queryClient.invalidateQueries({
-        queryKey: [appLinks.queryKeys.getChatListMessages],
-      });
-      return pairMessages.messages;
+      return response.data.data;
     },
+    staleTime: 5000,
+    refetchInterval: 5000,
   });
 };
 
-export const useGetChatListMessagesQuery = (senderId?: string) => {
+export const useGetAllUserPairsQuery = (senderId?: string) => {
+  const { dispatch } = useStateProvider();
   return useQuery({
     enabled: !!senderId,
-    queryKey: [appLinks.queryKeys.getChatListMessages, { senderId }],
+    queryKey: [appLinks.queryKeys.getAllUserPairs, { senderId }],
     queryFn: async () => {
-      const response = await API.get(
-        `${appLinks.getChatListMessages}/${senderId}`,
-      );
+      const response = await API.get(`${appLinks.getAllUserPairs}/${senderId}`);
       if (!response.data.success || !response.data.data) {
         throw new Error(response.data.msg);
       }
-      return response.data.data as TChatList[];
+
+      const allUserPairs = response.data.data as TUserPairIncludes[];
+      dispatch({ type: "SET_ALL_USER_PAIRS", payload: allUserPairs });
+      return allUserPairs;
     },
   });
 };

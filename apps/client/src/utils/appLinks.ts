@@ -1,8 +1,10 @@
 export const appLinks = {
   queryKeys: {
     getAllUsers: "get-all-users",
-    getChatListMessages: "get-chat-list-messages",
-    getPairMessages: "get-pair-messages",
+    getAllOnlineUsersId: "get-all-online-users-id",
+    getAllUserPairs: "get-user-pairs",
+    setReadMessages: "set-read-messages",
+    generateToken: "generate-token",
   },
 
   home: "/",
@@ -17,11 +19,17 @@ export const appLinks = {
   get authOnboardUserRoute() {
     return `${this.authRoute}/onboard-user`;
   },
+  get generateToken() {
+    return `${this.authRoute}/generate-token`;
+  },
 
   // user route
   usersRoute: `/api/users`,
   get getAllUsers() {
     return `${this.usersRoute}`;
+  },
+  get getAllOnlineUsersId() {
+    return `${this.usersRoute}/online-users-id`;
   },
 
   // message route
@@ -29,13 +37,19 @@ export const appLinks = {
   get getAllMessages() {
     return `${this.messagesRoute}`;
   },
-  get getPairMessages() {
-    return `${this.messagesRoute}/get-pair-messages`;
+  get setReadMessages() {
+    return `${this.messagesRoute}/set-read-messages`;
   },
   get addPairMessages() {
     return `${this.messagesRoute}/add-pair-messages`;
   },
-  get getChatListMessages() {
-    return `${this.messagesRoute}/get-chat-list-messages`;
+  get getAllUserPairs() {
+    return `${this.messagesRoute}/get-all-user-pairs`;
+  },
+  get addImageMessage() {
+    return `${this.messagesRoute}/add-image-message`;
+  },
+  get addAudioMessage() {
+    return `${this.messagesRoute}/add-audio-message`;
   },
 };

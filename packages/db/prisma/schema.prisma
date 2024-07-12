@@ -8,23 +8,17 @@ datasource db {
 }
 
 model user {
-  id               String      @id @default(uuid())
-  name             String
-  email            String      @unique
-  bio              String      @default("")
-  image            String      @default("")
-  isOnBoard        Boolean     @default(false)
-  sentMessages     user_pair[] @relation("sent_messages")
-  receivedMessages user_pair[] @relation("received_messages")
+  id        String  @id @default(uuid())
+  name      String
+  email     String  @unique
+  bio       String  @default("")
+  image     String  @default("")
+  isOnBoard Boolean @default(false)
 }
 
 model user_pair {
-  id         String @id
-  messages   String @db.Text
-  senderId   String
-  sender     user   @relation("sent_messages", fields: [senderId], references: [id], onDelete: Cascade)
-  receiverId String
-  receiver   user   @relation("received_messages", fields: [receiverId], references: [id], onDelete: Cascade)
+  id       String @id
+  messages String @db.Text
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

@@ -1,3 +1,4 @@
+import { generateToken04 } from "@/utils/TokenGenerator";
 import { db } from "@repo/db";
 import { authSchema } from "@repo/schemas";
 import { NextFunction, Request, Response } from "express";
@@ -64,6 +65,36 @@ export const onboardUser = async (
       msg: "Successful",
       success: true,
       data: user,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const generateToken = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const appId = parseInt(process.env.ZEGO_APP_ID || "");
+    const serverSecret = process.env.ZEGO_SERVER_SECRET || "";
+
+    const userId = req.params.userId;
+    const effectiveTime = 3600;
+
+    if (!appId || !serverSecret || !userId)
+      return res.status(403).json({
+        msg: "Forbidden Request ",
+        success: false,
+      });
+
+    const token = generateToken04(appId, userId, serverSecret, effectiveTime);
+
+    return res.status(200).json({
+      msg: "Successful",
+      success: true,
+      data: token,
     });
   } catch (error) {
     next(error);

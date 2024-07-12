@@ -5,6 +5,8 @@ import { calculateTime } from "@/utils/CalculateTime";
 import { defaultAvatar } from "@/utils/constants";
 import { user } from "@repo/db";
 import { TMessageSchema } from "@repo/schemas/types";
+import { FaImage } from "react-icons/fa";
+import { AiFillAudio } from "react-icons/ai";
 
 type Props = {
   user: user;
@@ -68,7 +70,17 @@ function ChatLIstItem({
                   "font-semibold text-emerald-300": isShowHighLight,
                 })}
               >
-                {lastMessage[0]?.message}
+                {lastMessage?.[0].type === "image" ? (
+                  <span className="flex items-center gap-1">
+                    Image <FaImage className="size-4" />
+                  </span>
+                ) : lastMessage?.[0].type === "audio" ? (
+                  <span className="flex items-center gap-1">
+                    Audio <AiFillAudio className="size-4" />
+                  </span>
+                ) : (
+                  lastMessage[0]?.message
+                )}
               </span>
             ) : (
               <span

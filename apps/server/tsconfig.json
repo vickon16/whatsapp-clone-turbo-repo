@@ -15,6 +15,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["./src/**/*.ts", "global.d.ts"],
+  "include": ["./src/**/*.ts", "global.d.ts", "src/utils/TokenGenerator.ts"],
   "exclude": ["node_modules", "test", "dist", "**/*spec.ts"],
 }
