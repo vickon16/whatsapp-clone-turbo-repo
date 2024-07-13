@@ -18,7 +18,13 @@ app.use(
   // logger(":method :url :status :res[content-length] - :response-time ms")
   logger("dev")
 );
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.CORS_ORIGIN, // Allow only this origin
+    methods: ["GET", "POST", "PUT", "DELETE"], // Allowed methods
+    allowedHeaders: ["Content-Type", "Authorization"], // Allowed headers
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
