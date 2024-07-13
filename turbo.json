@@ -7,6 +7,16 @@
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "outputs": [".next/**", "!.next/cache/**", "dist/**"]
     },
+    "build:client": {
+      "dependsOn": ["^db:generate", "^build:client"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
+    },
+    "build:server": {
+      "dependsOn": ["^db:generate", "^build:server"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
+    },
     "lint": {
       "dependsOn": ["^lint"]
     },
