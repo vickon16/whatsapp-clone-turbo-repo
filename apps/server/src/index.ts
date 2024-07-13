@@ -38,6 +38,11 @@ app.use((err: any, req: any, res: any, next: any) => {
   res.send(err.message);
 });
 
+app.use("/api/test", (req, res) => {
+  return res.status(200).json({
+    message: "API is working!",
+  });
+});
 app.use("/uploads", express.static("uploads"));
 app.use("/api/auth", authRoutes);
 app.use("/api/users", usersRoutes);
