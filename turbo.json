@@ -24,15 +24,11 @@
       "cache": false
     },
     "start:client": {
-      "dependsOn": [
-        "^build:client"
-      ],
+      "dependsOn": [ "^db:generate", "^build:client"],
       "cache": false
     },
     "start:server": {
-      "dependsOn": [
-        "^build:server"
-      ],
+      "dependsOn": ["^db:generate", "^build:server"],
       "cache": false
     },
     "lint": {
