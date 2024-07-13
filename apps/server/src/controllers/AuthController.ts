@@ -1,4 +1,4 @@
-import { generateToken04 } from "@/utils/TokenGenerator";
+import { generateToken04 } from "@/utils/TokenGenerator.js";
 import { db } from "@repo/db";
 import { authSchema } from "@repo/schemas";
 import { NextFunction, Request, Response } from "express";

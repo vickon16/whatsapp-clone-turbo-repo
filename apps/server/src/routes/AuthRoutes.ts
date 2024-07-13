@@ -2,7 +2,7 @@ import {
   checkUser,
   generateToken,
   onboardUser,
-} from "@/controllers/AuthController";
+} from "@/controllers/AuthController.js";
 import { Router } from "express";
 
 const router: Router = Router();

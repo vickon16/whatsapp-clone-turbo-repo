@@ -1,7 +1,7 @@
 {
   "extends" : "@repo/typescript-config/base.json",
   "compilerOptions": {
-    "module": "ES6",
+    "module": "ESNext",
     "moduleResolution": "Bundler",
     "declaration": true,
     "removeComments": true,
@@ -9,9 +9,8 @@
     "emitDecoratorMetadata": true,
     "allowSyntheticDefaultImports": true,
     "target": "ES2022",
-    "sourceMap": true,
     "outDir": "./dist",
-    "paths": {
+    "paths" : {
       "@/*": ["./src/*"]
     }
   },

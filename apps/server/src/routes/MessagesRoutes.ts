@@ -3,7 +3,7 @@ import {
   setReadMessages,
   getAllUserPairs,
   addImageAudioMessage,
-} from "@/controllers/MessageController";
+} from "@/controllers/MessageController.js";
 import { Router } from "express";
 import multer from "multer";
 

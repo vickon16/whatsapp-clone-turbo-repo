@@ -1,4 +1,7 @@
-import { getAllUsers, getAllOnlineUsersId } from "@/controllers/UserController";
+import {
+  getAllUsers,
+  getAllOnlineUsersId,
+} from "@/controllers/UserController.js";
 import { Router } from "express";
 
 const router: Router = Router();
